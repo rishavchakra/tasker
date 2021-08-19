@@ -1,0 +1,24 @@
+{
+	"boards": [
+
+		{
+			"name": "Test Board",
+			"categories": [
+
+				{
+					"name": "This is a category",
+					"items": [
+
+						{
+							"name": "This is an item",
+							"description": "This is its description"
+						}
+						
+					]
+				}
+
+			]
+		}
+
+	]
+}

@@ -1,7 +1,10 @@
+mod data;   
+
 use gio::prelude::*;
 use gtk::prelude::*;
 
 fn main() {
+    data::open_json();
     let app = gtk::Application::new(
         Some("com.rishavc.tasker_gui"),
         gio::ApplicationFlags::FLAGS_NONE,
