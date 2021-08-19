@@ -1,24 +1,37 @@
 {
 	"boards": [
-
 		{
-			"name": "Test Board",
+			"name": "Board0",
+			"description": "This is the first board's description",
 			"categories": [
-
-				{
-					"name": "This is a category",
-					"items": [
-
-						{
-							"name": "This is an item",
-							"description": "This is its description"
-						}
-						
-					]
-				}
-
+				"Board 0 category 0",
+				"Board 0 category 1"
+			]
+		},
+		{
+			"name": "Board1",
+			"description": "This is the second board's description",
+			"categories": [
+				"Board 1 category 0",
+				"Board 1 category 1"
 			]
 		}
+	],
 
+	"tasks": [
+		{
+			"name": "Task name",
+			"description": "This is the description",
+			"state": false,
+			"board": 0,
+			"category":  0
+		},
+		{
+			"name": "Another task name",
+			"description": "Another description",
+			"state": true,
+			"board": 0,
+			"category": 0
+		}
 	]
 }
