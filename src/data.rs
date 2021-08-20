@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 // Items reference the category they are inside
 
 // If not, more traditional organization
-// Boards contain categories, which contain items
+// Boards contain columns, which contain items
 // Easier to organize but harder to work with
 
 // Or, use a simpler organization
@@ -23,116 +23,152 @@ use serde::{Deserialize, Serialize};
 // Tasks store the category and board they are under
 // Boards are also stored in the top-level and contain category names
 
+/**
+TaskData structs contain all the data in the JSON file.
+
+*/
 #[derive(Serialize, Deserialize)]
 pub struct TaskData {
     boards: Vec<Board>,
     tasks: Vec<Task>,
 }
 
+/**
+Boards contain lists of columns of task items
+name, description, and column names
+*/
 #[derive(Serialize, Deserialize)]
-struct Board {
+pub struct Board {
     name: String,
     description: String,
-    categories: Vec<String>,
+    columns: Vec<String>,
 }
 
+/**
+Tasks are individual items in the board that contain the task's information
+name, description, completion state, board index, column index
+*/
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Task {
     name: String,
     description: String,
     state: bool,
     board: usize,
-    category: usize
+    column: usize
 }
 
 pub fn add_board(_name: String) {
     // TODO: this
 }
 
-pub fn add_category(_name: String) {
+pub fn add_column(_name: String) {
     // TODO: also this
 }
 
 pub fn add_task(_name: String, _description: String) {
     // TODO: this too
     // let task_to_add = Task {
-    //     name: _name,
-    //     description: _description,
-    //     state: false,
-    // };
-}
+        //     name: _name,
+        //     description: _description,
+        //     state: false,
+        // };
+    }
 
+/**
+Returns a list of names of all the boards
+*/
 pub fn get_board_names() -> Vec<String> {
     let data = open_json();
     data.boards.iter().map(|board| board.name.clone()).collect::<Vec<String>>()
 }
 
-pub fn get_category_names(board_name: &String) -> Option<Vec<String>> {
+/**
+Returns a list of columns in a board with a given name
+*/
+pub fn get_column_names(board_name: &String) -> Option<Vec<String>> {
     let data = open_json();
     for board in &data.boards {
         if &board.name == board_name {
-            return Some(board.categories.clone());
+            return Some(board.columns.clone());
         }
     }
     None
 }
 
-pub fn get_category_names_ind(board: usize) -> Option<Vec<String>> {
+/**
+Returns a list of columns in a board with a given board index
+*/
+pub fn get_column_names_ind(board: usize) -> Option<Vec<String>> {
     let data = open_json();
     if board > data.boards.len() {
         return None;
     }
-    Some(data.boards[board].categories.clone())
+    Some(data.boards[board].columns.clone())
 }
 
-pub fn get_task_names(board_name: &String, category_name: &String) -> Vec<String> {
+/**
+Returns a list of tasks in a given board/column pair
+*/
+pub fn get_task_names(board_name: &String, column_name: &String) -> Vec<String> {
     let data = open_json();
     let boards = get_board_names();
-    let categories = get_category_names(&board_name).unwrap();
+    let columns = get_column_names(&board_name).unwrap();
     let mut task_names = Vec::new();
     for task in &data.tasks {
-        if &boards[task.board] == board_name && &categories[task.category] == category_name {
+        if &boards[task.board] == board_name && &columns[task.column] == column_name {
             task_names.push(task.name.clone());
         }
     }
     task_names
 }
 
-pub fn get_task_names_ind(board: usize, category: usize) -> Vec<String> {
+/**
+Returns a list of tasks in a given board/column pair by their indices
+*/
+pub fn get_task_names_ind(board: usize, column: usize) -> Vec<String> {
     let data = open_json();
     let mut task_names = Vec::new();
     for task in &data.tasks {
-        if board == task.board && category == task.category {
+        if board == task.board && column == task.column {
             task_names.push(task.name.clone());
         }
     }
     task_names
 }
 
-pub fn get_tasks(board_name: &String, category_name: &String) -> Vec<Task> {
+/**
+Returns a list of tasks in a given board/column pair
+*/
+pub fn get_tasks(board_name: &String, column_name: &String) -> Vec<Task> {
     let data = open_json();
     let boards = get_board_names();
-    let categories = get_category_names(&board_name).unwrap();
+    let columns = get_column_names(&board_name).unwrap();
     let mut tasks = Vec::new();
     for task in &data.tasks {
-        if &boards[task.board] == board_name && &categories[task.category] == category_name {
+        if &boards[task.board] == board_name && &columns[task.column] == column_name {
             tasks.push(task.clone());
         }
     }
     tasks
 }
 
-pub fn get_tasks_ind(board: usize, category: usize) -> Vec<Task> {
+/**
+Returns a list of tasks in a given board/column pair by their indices
+*/
+pub fn get_tasks_ind(board: usize, column: usize) -> Vec<Task> {
     let data = open_json();
     let mut tasks = Vec::new();
     for task in &data.tasks {
-        if board == task.board && category == task.category {
+        if board == task.board && column == task.column {
             tasks.push(task.clone());
         }
     }
     tasks
 }
 
+/**
+Opens the json file and returns the data as its data struct representation
+*/
 fn open_json() -> TaskData {
     let mut data_file =
         File::open("tasker_data.json").expect("ERROR: Could not find the data json file");
