@@ -1,4 +1,4 @@
-mod data;   
+mod data;
 
 use gio::prelude::*;
 use gtk::prelude::*;
@@ -7,16 +7,22 @@ fn main() {
     let app = gtk::Application::new(
         Some("com.rishavc.tasker_gui"),
         gio::ApplicationFlags::FLAGS_NONE,
-    ).expect("Failed to initialize GTK");
+    )
+    .expect("Failed to initialize GTK");
 
-    app.connect_activate(|app| {
-        let window = gtk::ApplicationWindow::new(app);
-        window.set_title("Tasker");
-        window.set_default_size(400, 240);
-        window.show_all();
-    });
+    app.connect_activate(build_ui);
 
     app.run(&std::env::args().collect::<Vec<_>>());
+}
+
+fn build_ui(app: &gtk::Application) {
+    let glade_src = include_str!("../layouts/main.glade");
+    let builder = gtk::Builder::from_string(glade_src);
+    let window: gtk::Window = builder.get_object("main_ApplicationWindow").unwrap();
+
+    window.set_application(Some(app));
+
+    window.show_all();
 }
 
 mod tests {
@@ -29,12 +35,12 @@ mod tests {
     }
 
     #[test]
-    fn test_json_categorynames() {
+    fn test_json_columnnames() {
         let board_names = data::get_board_names();
-        let cat_name1 = data::get_category_names(&board_names[0]).unwrap();
-        assert_eq!(cat_name1, vec!["Board 0 category 0", "Board 0 category 1"]);
-        let cat_name2 = data::get_category_names(&board_names[1]).unwrap();
-        assert_eq!(cat_name2, vec!["Board 1 category 0", "Board 1 category 1"]);
+        let cat_name1 = data::get_column_names(&board_names[0]).unwrap();
+        assert_eq!(cat_name1, vec!["Board 0 column 0", "Board 0 column 1"]);
+        let cat_name2 = data::get_column_names(&board_names[1]).unwrap();
+        assert_eq!(cat_name2, vec!["Board 1 column 0", "Board 1 column 1"]);
     }
 
     #[test]
