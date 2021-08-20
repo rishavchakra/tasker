@@ -3,17 +3,17 @@
 		{
 			"name": "Board0",
 			"description": "This is the first board's description",
-			"categories": [
-				"Board 0 category 0",
-				"Board 0 category 1"
+			"columns": [
+				"Board 0 column 0",
+				"Board 0 column 1"
 			]
 		},
 		{
 			"name": "Board1",
 			"description": "This is the second board's description",
-			"categories": [
-				"Board 1 category 0",
-				"Board 1 category 1"
+			"columns": [
+				"Board 1 column 0",
+				"Board 1 column 1"
 			]
 		}
 	],
@@ -24,14 +24,14 @@
 			"description": "This is the description",
 			"state": false,
 			"board": 0,
-			"category":  0
+			"column":  0
 		},
 		{
 			"name": "Another task name",
 			"description": "Another description",
 			"state": true,
 			"board": 0,
-			"category": 0
+			"column": 0
 		}
 	]
 }
