@@ -1,1 +1,14 @@
 /target
+
+# VS Code configuration
+.vscode/
+
+# Jetbrains configuration
+.idea/
+
+# Cargo-generated build folders
+debug/
+target/
+
+# MSVC rustc debugging information
+*pdb
